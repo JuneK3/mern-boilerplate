@@ -1,3 +1,9 @@
+# folder
 /node_modules
+
+# dotenv
 .env
+.env.dev
+
+# html files
 BoilerPlate Korean.html
