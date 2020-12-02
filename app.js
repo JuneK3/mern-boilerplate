@@ -1,4 +1,17 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+
+dotenv.config();
+
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('MongoDB 연결 성공'))
+  .catch((err) => console.log(err));
+
 const app = express();
 app.set('port', process.env.PORT || 8000);
 
