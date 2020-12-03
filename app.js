@@ -21,8 +21,11 @@ app.set('port', process.env.PORT || 8000);
 app.get('/', (req, res) => res.send('Start Boiler-Plate'));
 app.post('/register', (req, res) => {
   const user = new User(req.body);
-  user.save((err, user) => {
-    if (err) return res.json({ success: false });
+  user.save((err, userInfo) => {
+    if (err) {
+      console.log(err);
+      return res.json({ success: false });
+    }
     return res.status(200).json({ success: true });
   });
 });
