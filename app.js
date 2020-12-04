@@ -1,8 +1,9 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const dotenv = require('dotenv');
 const connect = require('./models');
-const { User } = require('./models/user');
+const pageRouter = require('./routes/page');
 
 dotenv.config({
   path: path.resolve(
@@ -15,19 +16,20 @@ connect();
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.set('port', process.env.PORT || 8000);
 
-app.get('/', (req, res) => res.send('Start Boiler-Plate'));
-app.post('/register', (req, res) => {
-  const user = new User(req.body);
-  user.save((err, userInfo) => {
-    if (err) {
-      console.log(err);
-      return res.json({ success: false });
-    }
-    return res.status(200).json({ success: true });
-  });
+app.use('/', pageRouter);
+
+app.use((req, res, next) => {
+  const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
+  error.status = 404;
+  next(error);
+});
+
+app.use((err, req, res, next) => {
+  console.log(err);
 });
 
 app.listen(app.get('port'), () => {
