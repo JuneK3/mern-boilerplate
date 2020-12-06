@@ -1,6 +1,5 @@
 # folder
 /node_modules
-client/node_modules
 
 # dotenv
 .env
