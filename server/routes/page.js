@@ -64,4 +64,8 @@ router.get('/user/auth', auth, (req, res) => {
   });
 });
 
+router.get('/api/hello', (req, res) => {
+  res.send('hello api');
+});
+
 module.exports = router;
