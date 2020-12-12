@@ -4,7 +4,8 @@ import './index.css';
 import App from './components/App';
 
 import 'antd/dist/antd.css';
-import { applyMiddleware, createStore, Provider } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import { Provider } from 'react-redux';
 import promiseMiddleware from 'redux-promise';
 import reduxThunk from 'redux-thunk';
 import Reducer from './_reducers';
