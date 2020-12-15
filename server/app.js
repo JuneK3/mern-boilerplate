@@ -1,9 +1,10 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 const path = require('path');
 const dotenv = require('dotenv');
 const connect = require('./models');
-const pageRouter = require('./routes/page');
+const apiRouter = require('./routes/api');
 
 dotenv.config({
   path: path.resolve(
@@ -14,13 +15,14 @@ dotenv.config({
 connect();
 
 const app = express();
+app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
 app.set('port', process.env.PORT || 8000);
 
-app.use('/', pageRouter);
+app.use('/api', apiRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

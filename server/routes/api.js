@@ -4,9 +4,7 @@ const { auth } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/', (req, res) => res.send('Start Boiler-Plate'));
-
-router.post('/register', (req, res) => {
+router.post('/users/register', (req, res) => {
   const user = new User(req.body);
   user.save((err, userInfo) => {
     if (err) {
@@ -17,7 +15,7 @@ router.post('/register', (req, res) => {
   });
 });
 
-router.post('/login', (req, res) => {
+router.post('/users/login', (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
       return res.json({
@@ -44,14 +42,14 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.post('/logout', auth, (req, res) => {
+router.post('/users/logout', auth, (req, res) => {
   User.findOneAndUpdate({ _id: req.user._id }, { token: '' }, (err, user) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({ success: true });
   });
 });
 
-router.get('/user/auth', auth, (req, res) => {
+router.get('/users/auth', auth, (req, res) => {
   res.status(200).json({
     _id: req.user._id,
     isAdmin: req.user.role === 0 ? false : true,
@@ -62,10 +60,6 @@ router.get('/user/auth', auth, (req, res) => {
     role: req.user.role,
     image: req.user.image,
   });
-});
-
-router.get('/api/hello', (req, res) => {
-  res.send('hello api');
 });
 
 module.exports = router;
