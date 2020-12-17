@@ -6,12 +6,23 @@ const router = express.Router();
 
 router.post('/users/register', (req, res) => {
   const user = new User(req.body);
+  const existUser = User.findOne({ email: user.email });
+  console.log(existUser);
+  if (existUser) {
+    return res.json({
+      registerSuccess: false,
+      message: '이메일을 사용중인 유저가 이미 존재합니다.',
+    });
+  }
   user.save((err, userInfo) => {
     if (err) {
       console.log(err);
-      return res.json({ success: false });
+      return res.json({
+        registerSuccess: false,
+        message: '회원가입 중 에러 발생',
+      });
     }
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ registerSuccess: true });
   });
 });
 
@@ -42,10 +53,15 @@ router.post('/users/login', (req, res) => {
   });
 });
 
-router.post('/users/logout', auth, (req, res) => {
+router.get('/users/logout', auth, (req, res) => {
   User.findOneAndUpdate({ _id: req.user._id }, { token: '' }, (err, user) => {
-    if (err) return res.json({ success: false, err });
-    return res.status(200).json({ success: true });
+    if (err)
+      return res.json({
+        logoutSuccess: false,
+        message: '로그아웃 중 에러 발생',
+        err,
+      });
+    return res.status(200).json({ logoutSuccess: true });
   });
 });
 
