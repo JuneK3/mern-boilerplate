@@ -1,6 +1,8 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { FaCode } from 'react-icons/fa';
 
-function LandingPage() {
+function LandingPage({ history }) {
   return (
     <div
       style={{
@@ -9,10 +11,12 @@ function LandingPage() {
         alignItems: 'center',
         width: '100%',
         height: '100vh',
+        position: 'relative',
       }}>
-      <h2>시작 페이지</h2>
+      <FaCode style={{ fontSize: '4rem', marginRight: '1rem' }} />
+      <span style={{ fontSize: '2rem' }}>BoilerPlate Main Page</span>
     </div>
   );
 }
 
-export default LandingPage;
+export default withRouter(LandingPage);
