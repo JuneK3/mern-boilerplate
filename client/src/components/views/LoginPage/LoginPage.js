@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { loginUser } from '../../../_actions/user_action';
+import { Form, Input, Button, Checkbox, Typography } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+const { Title } = Typography;
 
 function LoginPage({ history }) {
   const dispatch = useDispatch();
@@ -32,22 +35,57 @@ function LoginPage({ history }) {
     <div
       style={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
         height: '100vh',
       }}>
-      <form
-        method='post'
-        style={{ display: 'flex', flexDirection: 'column' }}
-        onSubmit={submitHandler}>
-        <label>Email</label>
-        <input type='email' value={email} onChange={emailHandler} />
-        <label>Password</label>
-        <input type='password' value={password} onChange={passwordHandler} />
-        <br />
-        <button type='submit'>Login</button>
-      </form>
+      <Title level={2}>Log In</Title>
+      <Form style={{ width: '350px' }}>
+        <Form.Item required>
+          <Input
+            id='email'
+            prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder='Enter your email'
+            type='email'
+            value={email}
+            onChange={emailHandler}
+            className='text-input'
+          />
+        </Form.Item>
+        <Form.Item required>
+          <Input
+            id='password'
+            prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder='Enter your password'
+            type='password'
+            value={password}
+            onChange={passwordHandler}
+            className='text-input'
+          />
+        </Form.Item>
+        <Form.Item>
+          <Checkbox id='rememberMe'>Remember me</Checkbox>
+          <a
+            className='login-form-forgot'
+            href='/reset_user'
+            style={{ float: 'right' }}>
+            forgot password
+          </a>
+          <div>
+            <Button
+              type='primary'
+              htmlType='submit'
+              className='login-form-button'
+              style={{ minWidth: '100%' }}
+              onClick={submitHandler}>
+              Log in
+            </Button>
+          </div>
+          Or <a href='/register'>register now!</a>
+        </Form.Item>
+      </Form>
     </div>
   );
 }

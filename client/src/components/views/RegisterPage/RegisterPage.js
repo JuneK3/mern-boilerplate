@@ -2,11 +2,38 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { registerUser } from '../../../_actions/user_action';
+import { Form, Input, Button, Typography } from 'antd';
+const { Title } = Typography;
 
-function LoginPage({ history }) {
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+  },
+};
+
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 16,
+      offset: 3,
+    },
+  },
+};
+
+function RegisterPage({ history }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -16,6 +43,10 @@ function LoginPage({ history }) {
 
   const nameHandler = (e) => {
     setName(e.target.value);
+  };
+
+  const lastNameHandler = (e) => {
+    setLastName(e.target.value);
   };
 
   const passwordHandler = (e) => {
@@ -34,6 +65,7 @@ function LoginPage({ history }) {
     const body = {
       email,
       name,
+      lastName,
       password,
       confirmPassword,
     };
@@ -52,32 +84,81 @@ function LoginPage({ history }) {
     <div
       style={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
         height: '100vh',
       }}>
-      <form
-        method='post'
-        style={{ display: 'flex', flexDirection: 'column' }}
-        onSubmit={submitHandler}>
-        <label>Email</label>
-        <input type='email' value={email} onChange={emailHandler} />
-        <label>Name</label>
-        <input type='text' value={name} onChange={nameHandler} />
-        <label>Password</label>
-        <input type='password' value={password} onChange={passwordHandler} />
-        <label>Confirm Password</label>
-        <input
-          type='password'
-          value={confirmPassword}
-          onChange={confirmPasswordHandler}
-        />
-        <br />
-        <button type='submit'>Register</button>
-      </form>
+      <Title level={2}>Sign Up</Title>
+      <Form
+        style={{
+          width: '375px',
+          display: 'inline-block',
+          textAlign: 'center',
+        }}
+        {...formItemLayout}>
+        <Form.Item required label='Name'>
+          <Input
+            id='name'
+            placeholder='Enter your name'
+            type='text'
+            value={name}
+            onChange={nameHandler}
+            className='text-input'
+          />
+        </Form.Item>
+        <Form.Item required label='Last Name'>
+          <Input
+            id='lastName'
+            placeholder='Enter your Last Name'
+            type='text'
+            value={lastName}
+            onChange={lastNameHandler}
+            className='text-input'
+          />
+        </Form.Item>
+        <Form.Item required label='Email'>
+          <Input
+            id='email'
+            placeholder='Enter your Email'
+            type='email'
+            value={email}
+            onChange={emailHandler}
+            className='text-input'
+          />
+        </Form.Item>
+        <Form.Item required label='Password'>
+          <Input
+            id='password'
+            placeholder='Enter your password'
+            type='password'
+            value={password}
+            onChange={passwordHandler}
+            className='text-input'
+          />
+        </Form.Item>
+        <Form.Item required label='Confirm'>
+          <Input
+            id='confirmPassword'
+            placeholder='Enter your confirmPassword'
+            type='password'
+            value={confirmPassword}
+            onChange={confirmPasswordHandler}
+            className='text-input'
+          />
+        </Form.Item>
+        <Form.Item {...tailFormItemLayout}>
+          <Button
+            onClick={submitHandler}
+            type='primary'
+            className='register-form-button'>
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
 
-export default withRouter(LoginPage);
+export default withRouter(RegisterPage);
