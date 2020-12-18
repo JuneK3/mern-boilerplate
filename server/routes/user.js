@@ -4,7 +4,7 @@ const { auth } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.post('/users/register', (req, res) => {
+router.post('/register', (req, res) => {
   const user = new User(req.body);
   const existUser = User.findOne({ email: user.email });
   console.log(existUser);
@@ -26,7 +26,7 @@ router.post('/users/register', (req, res) => {
   });
 });
 
-router.post('/users/login', (req, res) => {
+router.post('/login', (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user) {
       return res.json({
@@ -53,7 +53,7 @@ router.post('/users/login', (req, res) => {
   });
 });
 
-router.get('/users/logout', auth, (req, res) => {
+router.get('/logout', auth, (req, res) => {
   User.findOneAndUpdate({ _id: req.user._id }, { token: '' }, (err, user) => {
     if (err)
       return res.json({
@@ -65,7 +65,7 @@ router.get('/users/logout', auth, (req, res) => {
   });
 });
 
-router.get('/users/auth', auth, (req, res) => {
+router.get('/auth', auth, (req, res) => {
   res.status(200).json({
     _id: req.user._id,
     isAdmin: req.user.role === 0 ? false : true,

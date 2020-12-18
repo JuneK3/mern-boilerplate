@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const path = require('path');
 const dotenv = require('dotenv');
 const connect = require('./models');
-const apiRouter = require('./routes/api');
+const userRouter = require('./routes/user');
 
 dotenv.config({
   path: path.resolve(
@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 app.set('port', process.env.PORT || 8000);
 
-app.use('/api', apiRouter);
+app.use('/api/users', userRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
