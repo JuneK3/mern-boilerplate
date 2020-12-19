@@ -4,30 +4,31 @@ const { auth } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const user = new User(req.body);
-  const existUser = User.findOne({ email: user.email });
-  console.log(existUser);
-  if (existUser) {
-    return res.json({
-      registerSuccess: false,
-      message: '이메일을 사용중인 유저가 이미 존재합니다.',
-    });
-  }
-  user.save((err, userInfo) => {
-    if (err) {
-      console.log(err);
+  try {
+    const existUser = await User.findOne({ email: user.email });
+    console.log(existUser);
+    if (existUser) {
       return res.json({
         registerSuccess: false,
-        message: '회원가입 중 에러 발생',
+        message: '이메일을 사용중인 유저가 이미 존재합니다.',
       });
     }
+    const userInfo = await user.save();
+    console.log(userInfo);
     return res.status(200).json({ registerSuccess: true });
-  });
+  } catch (err) {
+    console.log('err', err);
+    return res
+      .status(500)
+      .json({ message: '회원가입 중 에러 발생', error: err });
+  }
 });
 
-router.post('/login', (req, res) => {
-  User.findOne({ email: req.body.email }, (err, user) => {
+router.post('/login', async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
     if (!user) {
       return res.json({
         loginSuccess: false,
@@ -50,19 +51,24 @@ router.post('/login', (req, res) => {
           .json({ loginSuccess: true, userId: user._id });
       });
     });
-  });
+  } catch (err) {
+    console.log('err', err);
+    return res.status(500).json({ message: '로그인 중 에러 발생', error: err });
+  }
 });
 
-router.get('/logout', auth, (req, res) => {
-  User.findOneAndUpdate({ _id: req.user._id }, { token: '' }, (err, user) => {
-    if (err)
-      return res.json({
-        logoutSuccess: false,
-        message: '로그아웃 중 에러 발생',
-        err,
-      });
+router.get('/logout', auth, async (req, res) => {
+  try {
+    await User.findOneAndUpdate({ _id: req.user._id }, { token: '' });
     return res.status(200).json({ logoutSuccess: true });
-  });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      logoutSuccess: false,
+      message: '로그아웃 중 에러 발생',
+      error: err,
+    });
+  }
 });
 
 router.get('/auth', auth, (req, res) => {

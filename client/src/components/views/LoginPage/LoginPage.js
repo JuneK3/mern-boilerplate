@@ -10,6 +10,7 @@ function LoginPage({ history }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [form] = Form.useForm();
 
   const emailHandler = (e) => {
     setEmail(e.target.value);
@@ -19,10 +20,8 @@ function LoginPage({ history }) {
     setPassword(e.target.value);
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const body = { email, password };
-    dispatch(loginUser(body)).then((response) => {
+  const onFinish = (values) => {
+    dispatch(loginUser(values)).then((response) => {
       if (response.payload.loginSuccess) {
         history.push('/');
       } else {
@@ -42,8 +41,25 @@ function LoginPage({ history }) {
         height: '100vh',
       }}>
       <Title level={2}>Log In</Title>
-      <Form style={{ width: '350px' }}>
-        <Form.Item required>
+      <Form
+        form={form}
+        style={{ width: '350px' }}
+        scrollToFirstError
+        onFinish={onFinish}
+        scrollToFirstError>
+        <Form.Item
+          required
+          name='email'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your email',
+            },
+            {
+              type: 'email',
+              message: 'Your input is not email format',
+            },
+          ]}>
           <Input
             id='email'
             prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -54,7 +70,16 @@ function LoginPage({ history }) {
             className='text-input'
           />
         </Form.Item>
-        <Form.Item required>
+        <Form.Item
+          required
+          name='password'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password',
+            },
+          ]}
+          hasFeedback>
           <Input
             id='password'
             prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -78,8 +103,7 @@ function LoginPage({ history }) {
               type='primary'
               htmlType='submit'
               className='login-form-button'
-              style={{ minWidth: '100%' }}
-              onClick={submitHandler}>
+              style={{ minWidth: '100%' }}>
               Log in
             </Button>
           </div>

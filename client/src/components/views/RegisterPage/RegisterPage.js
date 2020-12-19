@@ -33,9 +33,10 @@ function RegisterPage({ history }) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [lastname, setLastName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [form] = Form.useForm();
 
   const emailHandler = (e) => {
     setEmail(e.target.value);
@@ -57,20 +58,11 @@ function RegisterPage({ history }) {
     setConfirmPassword(e.target.value);
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const onFinish = (values) => {
     if (password !== confirmPassword) {
       return alert('비밀번호와 비밀번호 확인은 같아야 합니다.');
     }
-    const body = {
-      email,
-      name,
-      lastName,
-      password,
-      confirmPassword,
-    };
-    dispatch(registerUser(body)).then((response) => {
-      console.log(response);
+    dispatch(registerUser(values)).then((response) => {
       if (response.payload.registerSuccess) {
         history.push('/login');
       } else {
@@ -92,13 +84,29 @@ function RegisterPage({ history }) {
       }}>
       <Title level={2}>Sign Up</Title>
       <Form
+        form={form}
         style={{
           width: '375px',
           display: 'inline-block',
           textAlign: 'center',
         }}
+        onFinish={onFinish}
+        scrollToFirstError
         {...formItemLayout}>
-        <Form.Item required label='Name'>
+        <Form.Item
+          label='Name'
+          name='name'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your name',
+            },
+            {
+              type: 'string',
+              max: 10,
+              message: 'Your input exceed maximum length',
+            },
+          ]}>
           <Input
             id='name'
             placeholder='Enter your name'
@@ -108,17 +116,44 @@ function RegisterPage({ history }) {
             className='text-input'
           />
         </Form.Item>
-        <Form.Item required label='Last Name'>
+        <Form.Item
+          required
+          label='Last Name'
+          name='lastname'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your last name',
+            },
+            {
+              type: 'string',
+              max: 10,
+              message: 'Your input exceed maximum length',
+            },
+          ]}>
           <Input
-            id='lastName'
+            id='lastname'
             placeholder='Enter your Last Name'
             type='text'
-            value={lastName}
+            value={lastname}
             onChange={lastNameHandler}
             className='text-input'
           />
         </Form.Item>
-        <Form.Item required label='Email'>
+        <Form.Item
+          required
+          label='Email'
+          name='email'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your email',
+            },
+            {
+              type: 'email',
+              message: 'Your input is not email format',
+            },
+          ]}>
           <Input
             id='email'
             placeholder='Enter your Email'
@@ -128,7 +163,17 @@ function RegisterPage({ history }) {
             className='text-input'
           />
         </Form.Item>
-        <Form.Item required label='Password'>
+        <Form.Item
+          required
+          label='Password'
+          name='password'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password',
+            },
+          ]}
+          hasFeedback>
           <Input
             id='password'
             placeholder='Enter your password'
@@ -138,7 +183,27 @@ function RegisterPage({ history }) {
             className='text-input'
           />
         </Form.Item>
-        <Form.Item required label='Confirm'>
+        <Form.Item
+          required
+          label='Confirm'
+          name='confirm'
+          rules={[
+            {
+              required: true,
+              message: 'Please input your confirm password',
+            },
+            ({ getFieldValue }) => ({
+              validator(rule, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  'Confirm password does not match with Password'
+                );
+              },
+            }),
+          ]}
+          hasFeedback>
           <Input
             id='confirmPassword'
             placeholder='Enter your confirmPassword'
@@ -150,9 +215,9 @@ function RegisterPage({ history }) {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button
-            onClick={submitHandler}
             type='primary'
-            className='register-form-button'>
+            className='register-form-button'
+            htmlType='submit'>
             Submit
           </Button>
         </Form.Item>
