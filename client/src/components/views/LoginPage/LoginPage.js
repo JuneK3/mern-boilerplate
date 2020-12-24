@@ -44,7 +44,6 @@ function LoginPage({ history }) {
       <Form
         form={form}
         style={{ width: '350px' }}
-        scrollToFirstError
         onFinish={onFinish}
         scrollToFirstError>
         <Form.Item

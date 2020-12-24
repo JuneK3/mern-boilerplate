@@ -87,8 +87,8 @@ function RegisterPage({ history }) {
         form={form}
         style={{
           width: '375px',
-          display: 'inline-block',
-          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
         }}
         onFinish={onFinish}
         scrollToFirstError
@@ -213,7 +213,7 @@ function RegisterPage({ history }) {
             className='text-input'
           />
         </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
+        <Form.Item {...tailFormItemLayout} style={{ alignSelf: 'center' }}>
           <Button
             type='primary'
             className='register-form-button'

@@ -27,7 +27,7 @@ export default function HocComponent(
           }
         }
       });
-    }, []);
+    }, [dispatch, props.history]);
     return <SpecificComponent />;
   }
   return AuthCheck;
