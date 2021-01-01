@@ -84,7 +84,7 @@ John Ahn님의 BoilerPlate 제작 강좌를 참고해서 제작하려고 함
 ![RegisterPage](https://user-images.githubusercontent.com/35721370/102701564-927d9580-429b-11eb-886a-878495e6d3cc.PNG)
 
 ### Form Validation
-![Validation](https://user-images.githubusercontent.com/35721370/102701571-9a3d3a00-429b-11eb-9f6e-eb34f6a07e29.PNG)
+![validation2](https://user-images.githubusercontent.com/35721370/103439701-8b368e80-4c82-11eb-869e-e32b46f16e0c.PNG)
 
 
 ## Reference
