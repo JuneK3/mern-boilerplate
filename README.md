@@ -12,6 +12,8 @@ John Ahn님의 BoilerPlate 제작 강좌를 참고해서 제작하려고 함
 
 >Note: 일단 MongoDB를 사용해서 만들어볼 생각이고 개인프로젝트 제작에 NoSQL보다 RDBMS를 더 자주 사용하게 될 것 같아 다른 Branch에 MySQL버전을 만들어서 올려둘 계획임
 
+>Note: 프론트 부분은 Ant Design을 이용하여 구현함
+
 ## MERN Stack
 - M: MongoDB (MySQL 버전도 제작 계획)
 - E: Express
@@ -92,3 +94,4 @@ John Ahn님의 BoilerPlate 제작 강좌를 참고해서 제작하려고 함
 - [John Ahn님의 BoilerPlate Repo](https://github.com/jaewonhimnae/boilerplate-mern-stack)
 - [ZeroCho님의 노드교과서](https://github.com/ZeroCho/nodejs-book)
 - [Node BestPractice](https://github.com/goldbergyoni/nodebestpractices)
+- [Ant Design](https://ant.design/)
